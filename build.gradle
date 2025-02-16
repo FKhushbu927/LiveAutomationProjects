@@ -18,6 +18,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver
     implementation 'org.seleniumhq.selenium:selenium-firefox-driver:4.25.0'
+
+    // https://mvnrepository.com/artifact/org.testng/testng
+    testImplementation 'org.testng:testng:7.10.2'
+
 }
 
 test {
