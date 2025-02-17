@@ -45,8 +45,36 @@ public class TC_RF_003 {
 
 
         Assert.assertTrue(driver.findElement(By.linkText("Logout")).isDisplayed());
+       // Assert.assertTrue(driver.findElement(By.xpath("//ul[@class='breadcrumb']//a[text()='Account']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//ul[@class='breadcrumb']//a[text()='Success']")).isDisplayed());
 
 
+        String expeectedHeading = "Your Account Has Been Created!";
+
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@id='common-success']//h1")).getText(), expeectedHeading);
+
+        String successContentPara1 = "Congratulations! Your new account has been successfully created!";
+        String successContentPara2 = "You can now take advantage of member privileges to enhance your online shopping experience with us.";
+        String successContentPara3 = "If you have ANY questions about the operation of this online shop, please e-mail the store owner.";
+        String successContentPara4 = "A confirmation has been sent to the provided e-mail address. If you have not received it within the hour, please contact us.";
+
+        String successContentParaLink = "contact us";
+
+        String expectedSuccessContent = driver.findElement(By.id("content")).getText();
+
+
+        Assert.assertTrue(expectedSuccessContent.contains(successContentPara1));
+        Assert.assertTrue(expectedSuccessContent.contains(successContentPara2));
+        Assert.assertTrue(expectedSuccessContent.contains(successContentPara3));
+        Assert.assertTrue(expectedSuccessContent.contains(successContentPara4));
+        Assert.assertTrue(expectedSuccessContent.contains(successContentParaLink));
+
+        driver.findElement(By.xpath("//a[text()='Continue']")).click();
+
+
+        Assert.assertTrue(driver.findElement(By.linkText("Edit your account information")).isDisplayed());
+
+        //driver.quit();
     }
 
     public  String generateGmail(){
