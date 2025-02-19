@@ -15,7 +15,7 @@ public class TC_RF_006 {
     public void verifyRegisterAccountSayingNoToNewsLetter() {
         WebDriver driver = new FirefoxDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
         driver.get("https://tutorialsninja.com/demo/");
         driver.findElement(By.xpath("//span[text()='My Account']")).click();
