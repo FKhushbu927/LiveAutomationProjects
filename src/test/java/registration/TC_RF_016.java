@@ -6,6 +6,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -23,8 +24,8 @@ public class TC_RF_016 {
         driver.get("https://tutorialsninja.com/demo/");
     }
 
-    @Test
-    public void verifyRegisterAccountWithPasswordComplexity() {
+    @Test(dataProvider = "passwordSupplier")
+    public void verifyRegisterAccountWithPasswordComplexity(String passwordsText) {
         System.out.println("Running test case...");
         driver.findElement(By.xpath("//span[text()='My Account']")).click();
         driver.findElement(By.linkText("Register")).click();
@@ -34,8 +35,8 @@ public class TC_RF_016 {
         driver.findElement(By.id("input-lastname")).sendKeys("Jannat");
         driver.findElement(By.id("input-email")).sendKeys(generateGmail());
         driver.findElement(By.id("input-telephone")).sendKeys("12345676");
-        driver.findElement(By.id("input-password")).sendKeys("12345");
-        driver.findElement(By.id("input-confirm")).sendKeys("12345");
+        driver.findElement(By.id("input-password")).sendKeys(passwordsText);
+        driver.findElement(By.id("input-confirm")).sendKeys(passwordsText);
 
         driver.findElement(By.xpath("//input[@name='newsletter'][@value='1']")).click();
         driver.findElement(By.name("agree")).click();
@@ -51,6 +52,12 @@ public class TC_RF_016 {
     @AfterMethod
     public void tearDown() {
         driver.quit();
+    }
+
+    @DataProvider(name="passwordSupplier")
+    public Object[][] supplyPasswords(){
+           Object[][] data = { {"12"}, {"1345"}, {"abcdefgr"}, {"sdfjn12345@3"}, {"ADDKJF23@$"}};
+           return data;
     }
 
     public String generateGmail() {
