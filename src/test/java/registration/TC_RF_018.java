@@ -6,14 +6,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.Date;
 
-public class TC_RF_016 {
-
+public class TC_RF_018 {
     WebDriver driver;
 
     @BeforeMethod
@@ -24,39 +22,44 @@ public class TC_RF_016 {
         driver.get("https://tutorialsninja.com/demo/");
     }
 
-    @Test(dataProvider = "passwordSupplier")
-    public void verifyRegisterAccountWithPasswordComplexity(String passwordsText) {
+    @Test
+    public void verifyLeadingAndTrailingSpacesOfRegistrationAcc() {
+
         driver.findElement(By.xpath("//span[text()='My Account']")).click();
         driver.findElement(By.linkText("Register")).click();
 
+        String enteredFirstName = "   " + "Fatema" + "   ";
+        driver.findElement(By.id("input-firstname")).sendKeys(enteredFirstName);
 
-        driver.findElement(By.id("input-firstname")).sendKeys("Fatema");
-        driver.findElement(By.id("input-lastname")).sendKeys("Jannat");
+        String enteredLastName = "  " + "Jannat" + "  ";
+        driver.findElement(By.id("input-lastname")).sendKeys(enteredLastName);
+
         driver.findElement(By.id("input-email")).sendKeys(generateGmail());
-        driver.findElement(By.id("input-telephone")).sendKeys("12345676");
-        driver.findElement(By.id("input-password")).sendKeys(passwordsText);
-        driver.findElement(By.id("input-confirm")).sendKeys(passwordsText);
+
+        String enteredTelephone = " " + "9847012938" + "  ";
+        driver.findElement(By.id("input-telephone")).sendKeys(enteredTelephone);
+
+        driver.findElement(By.id("input-password")).sendKeys("12345");
+        driver.findElement(By.id("input-confirm")).sendKeys("12345");
 
         driver.findElement(By.xpath("//input[@name='newsletter'][@value='1']")).click();
         driver.findElement(By.name("agree")).click();
         driver.findElement(By.xpath("//input[@value='Continue']")).click();
+        driver.findElement(By.linkText("Continue")).click();
+        driver.findElement(By.linkText("Edit your account information")).click();
 
-        String expectedWarningMessage = "Password entered is not matching with the Complexity standards";
+        Assert.assertEquals(driver.findElement(By.id("input-firstname")).getAttribute("value"), enteredFirstName.trim());
+        Assert.assertEquals(driver.findElement(By.id("input-lastname")).getAttribute("value"), enteredLastName.trim());
 
-        Assert.assertEquals(driver.findElement(By.xpath("//input[@id='input-password']/following-sibling::div")).getText(), expectedWarningMessage);
-        Assert.assertFalse(driver.findElement(By.xpath("//ul[@class='breadcrumb']//a[text()='Success']")).isDisplayed());
-
+        Assert.assertEquals(driver.findElement(By.id("input-telephone")).getAttribute("value"), enteredTelephone.trim());
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
-    }
-
-    @DataProvider(name="passwordSupplier")
-    public Object[][] supplyPasswords(){
-           Object[][] data = { {"12"}, {"1345"}, {"abcdefgr"}, {"sdfjn12345@3"}, {"ADDKJF23@$"}};
-           return data;
+        if (driver != null) {
+            driver.quit();
+            System.out.println("Browser closed successfully.");
+        }
     }
 
     public String generateGmail() {
